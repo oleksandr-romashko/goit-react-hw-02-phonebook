@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import throttle from 'lodash.throttle';
 
 import { Button } from 'components/Button/Button.styled';
 import { Input } from 'components/Input/Input.styled';
@@ -17,7 +18,7 @@ const NAME_PATTERN_REGEX =
  * @param {callback} props.onNameChange Callback to handle name input change.
  * @returns {React.Component} Form component.
  */
-export const ContactForm = ({ inputNameValue, onAddContact, onNameChange }) => {
+export const ContactForm = ({ inputNameValue, onSubmit, onNameChange }) => {
   /**
    * Handles form submition.
    * Terminates if requested regex pattern does not match to input value.
@@ -33,7 +34,7 @@ export const ContactForm = ({ inputNameValue, onAddContact, onNameChange }) => {
       return;
     }
 
-    onAddContact(name);
+    onSubmit(name);
   };
 
   /**
@@ -51,7 +52,7 @@ export const ContactForm = ({ inputNameValue, onAddContact, onNameChange }) => {
       <Label aria-label="Name text">
         Name
         <Input
-          onChange={handleChange}
+          onChange={throttle(handleChange, 200, { trailing: false })}
           type="text"
           value={inputNameValue}
           name="name"
