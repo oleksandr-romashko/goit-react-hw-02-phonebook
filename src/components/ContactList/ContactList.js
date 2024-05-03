@@ -15,9 +15,6 @@ export const ContactList = ({ contacts }) =>
       {contacts.map(contact => (
         <li key={contact.id}>{contact.name}</li>
       ))}
-      {/* <li>Rosie Simpson</li>
-        <li>Hermione Kline</li>
-        <li>Eden Clements</li> */}
     </List>
   ) : (
     'There is no contacts'
