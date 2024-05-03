@@ -3,7 +3,7 @@ import styled from 'styled-components';
 /**
  * Styled text input.
  */
-export const Input = styled('input')({
+const Input = styled('input')({
   display: 'flex',
   width: '100%',
   maxWidth: '260px',
@@ -25,3 +25,5 @@ export const Input = styled('input')({
     borderRadius: '1px',
   },
 });
+
+export default Input;

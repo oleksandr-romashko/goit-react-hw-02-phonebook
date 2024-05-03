@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 
 import { Button } from 'components/Button/Button.styled';
-import { Input } from 'components/Input/Input.styled';
+import Input from 'components/Input/Input.styled';
 import { Form, Label } from './ContactForm.styled';
 
 /**
@@ -15,17 +15,13 @@ const PHONE_NUMBER_PATTERN_REGEX =
 
 /**
  * Form to add new contact.
- * @param {string} props.inputNameValue Name of the contact.
- * @param {callback} props.onAddContact Callback to handle add of a new contact.
- * @param {callback} props.onNameChange Callback to handle name input change.
+ * @param {string} props.nameText Contact name.
+ * @param {string} props.numberText Contact number.
+ * @param {callback} props.onInputChange Callback to handle input value change.
+ * @param {callback} props.onSubmit Callback to handle form submit.
  * @returns {React.Component} Form component.
  */
-export const ContactForm = ({
-  inputName,
-  inputNumber,
-  onSubmit,
-  onNameChange,
-}) => {
+const ContactForm = ({ nameText, numberText, onInputChange, onSubmit }) => {
   /**
    * Handles form submition.
    * Terminates if requested regex pattern does not match to input value.
@@ -58,7 +54,7 @@ export const ContactForm = ({
    * @param {string} event.target.value Element value.
    */
   const handleChange = ({ target: { name, value } }) => {
-    onNameChange({ name, value });
+    onInputChange({ name, value });
   };
 
   return (
@@ -67,7 +63,7 @@ export const ContactForm = ({
         Name
         <Input
           onChange={throttle(handleChange, 200, { trailing: false })}
-          value={inputName}
+          value={nameText}
           type="text"
           name="name"
           pattern={CONTACT_NAME_PATTERN_REGEX}
@@ -79,7 +75,7 @@ export const ContactForm = ({
         Phone number
         <Input
           onChange={throttle(handleChange, 200, { trailing: false })}
-          value={inputNumber}
+          value={numberText}
           type="tel"
           name="number"
           pattern={PHONE_NUMBER_PATTERN_REGEX}
@@ -95,8 +91,10 @@ export const ContactForm = ({
 };
 
 ContactForm.propTypes = {
-  inputName: PropTypes.string,
-  inputNumber: PropTypes.string,
+  nameText: PropTypes.string,
+  numberText: PropTypes.string,
   onAddContact: PropTypes.func,
-  onNameChange: PropTypes.func,
+  onInputChange: PropTypes.func,
 };
+
+export default ContactForm;

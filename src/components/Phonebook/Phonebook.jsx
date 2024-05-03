@@ -1,8 +1,10 @@
 import { Component } from 'react';
 import { nanoid } from 'nanoid';
 
-import { ContactForm } from 'components/ContactForm/ContactForm';
-import { ContactList } from 'components/ContactList/ContactList';
+import ContactForm from 'components/ContactForm/ContactForm';
+import ContactList from 'components/ContactList/ContactList';
+import textToNormalizedWordsArray from 'components/helpers/textToNormalizedWordsArray';
+
 import { Wrapper, Title, Subtitle } from './Phonebook.styled';
 
 /**
@@ -11,6 +13,7 @@ import { Wrapper, Title, Subtitle } from './Phonebook.styled';
 class Phonebook extends Component {
   #defaultState = {
     contacts: [],
+    filter: '',
     name: '',
     number: '',
   }
@@ -40,8 +43,23 @@ class Phonebook extends Component {
    * @param {string} props.name Name of the element.
    * @param {string} props.value Text value of the element.
    */
-  changeInputName = ({ name, value }) => {
+  handleTextChange = ({ name, value }) => {
     this.setState({ [name]: value });
+  }
+
+  /**
+   * Filters contacts based on filter value.
+   * @returns {object[]} Array of filtered contacts.
+   */
+  filterContacts = () => {
+    if (this.state.contacts.length === 0) {
+      return [];
+    }
+    const normalizedFilterArr = textToNormalizedWordsArray(this.state.filter);
+    return this.state.contacts.filter(({ name, number }) => {
+      const normalizedContact = textToNormalizedWordsArray(`${name}${number}`).join("");
+      return normalizedFilterArr.some(filterEl => (!filterEl.isEmpty && normalizedContact.includes(filterEl)));;
+    });
   }
 
   /**
@@ -53,16 +71,20 @@ class Phonebook extends Component {
       <Wrapper>
         <Title>Phonebook</Title>
         <ContactForm
-          inputName={this.state.name}
-          inputNumber={this.state.number}
+          nameText={this.state.name}
+          numberText={this.state.number}
+          onInputChange={this.handleTextChange}
           onSubmit={this.addContact}
-          onNameChange={this.changeInputName}
         />
         <Subtitle>Contacts</Subtitle>
-        <ContactList contacts={this.state.contacts} />
+        <ContactList
+          filterText={this.state.filter}
+          contacts={this.filterContacts()}
+          onInputChange={this.handleTextChange} />
       </Wrapper>
     );
   }
+
 }
 
 export default Phonebook;

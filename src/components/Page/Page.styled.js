@@ -10,6 +10,9 @@ const Page = styled('div')({
   fontSize: '32px',
   lineHeight: '1.15',
   color: '#000000',
+  '&:last-child': {
+    marginBottom: '40px',
+  },
 });
 
 export default Page;
