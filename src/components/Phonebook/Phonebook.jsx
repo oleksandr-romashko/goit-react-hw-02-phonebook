@@ -14,7 +14,10 @@ import textToNormalizedWordsArray from 'components/helpers/textToNormalizedWords
  */
 class Phonebook extends Component {
   #defaultState = {
-    contacts: [],
+    contacts: [{id: 'id-1', name: 'Rosie Simpson', number: '459-12-56'},
+    {id: 'id-2', name: 'Hermione Kline', number: '443-89-12'},
+    {id: 'id-3', name: 'Eden Clements', number: '645-17-79'},
+    {id: 'id-4', name: 'Annie Copeland', number: '227-91-26'},],
     filter: '',
     name: '',
     number: '',
@@ -25,10 +28,18 @@ class Phonebook extends Component {
   };
 
   /**
-   * Adds contacts to the list of contacts.
-   * @param {string} name Name of the contact. 
+   * Adds contact to the list of contacts.
+   * @param {string} name Name of the contact.
+   * @param {string} number Phone number of the contact. 
    */
   addContact = (name, number) => {
+    const isExist = this.state.contacts.some(({ name: existingName }) =>
+      existingName.toLowerCase() === name.toLowerCase());
+    if (isExist) {
+      alert(`${name} is already in contacts.`);
+      return;
+    }
+
     const id = nanoid();
     const contact = { id, name, number };
     this.setState(prevState => (
@@ -65,6 +76,17 @@ class Phonebook extends Component {
   }
 
   /**
+   * Removes contact from the list of contacts.
+   * @param {string} name Name of the contact.
+   * @param {string} number Phone number of the contact. 
+   */
+  deleteContactById = (id) => {
+    const index = this.state.contacts.findIndex(el => el.id === id);
+    const contacts = this.state.contacts.filter((_, idx) => idx !== index);
+    this.setState({ contacts: contacts });
+  }
+
+  /**
    * Renders phonebook content
    * @returns {React.Component}
    */
@@ -84,6 +106,7 @@ class Phonebook extends Component {
           onInputChange={this.handleTextChange} />
         <ContactList
           contacts={this.filterContacts()}
+          onDelete={this.deleteContactById}
            />
       </Wrapper>
     );
