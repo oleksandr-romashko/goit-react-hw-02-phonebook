@@ -17,7 +17,7 @@ export const ContactList = ({ contacts }) =>
       ))}
     </List>
   ) : (
-    'There is no contacts'
+    'There are no contacts'
   );
 
 ContactList.propTypes = {
