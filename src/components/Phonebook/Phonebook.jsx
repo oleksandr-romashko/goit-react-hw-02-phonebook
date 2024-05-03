@@ -9,26 +9,28 @@ import { Wrapper, Title, Subtitle } from './Phonebook.styled';
  * Phonebook to add and manage contacts.
  */
 class Phonebook extends Component {
-  defaultState = {
+  #defaultState = {
     contacts: [],
     name: '',
+    number: '',
   }
 
   state = {
-    ...this.defaultState,
+    ...this.#defaultState,
   };
 
   /**
    * Adds contacts to the list of contacts.
    * @param {string} name Name of the contact. 
    */
-  addContact = name => {
+  addContact = (name, number) => {
     const id = nanoid();
-    const contact = { id, name };
+    const contact = { id, name, number };
     this.setState(prevState => (
       {
         contacts: [contact, ...prevState.contacts],
-        name: this.defaultState.name,
+        name: this.#defaultState.name,
+        number: this.#defaultState.number
       }
     ))
   };
@@ -51,7 +53,8 @@ class Phonebook extends Component {
       <Wrapper>
         <Title>Phonebook</Title>
         <ContactForm
-          inputNameValue={this.state.name}
+          inputName={this.state.name}
+          inputNumber={this.state.number}
           onSubmit={this.addContact}
           onNameChange={this.changeInputName}
         />

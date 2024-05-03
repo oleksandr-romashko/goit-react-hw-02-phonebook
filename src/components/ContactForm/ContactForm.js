@@ -8,8 +8,10 @@ import { Form, Label } from './ContactForm.styled';
 /**
  * Patterns to check input text for.
  */
-const NAME_PATTERN_REGEX =
+const CONTACT_NAME_PATTERN_REGEX =
   "^[a-zA-Zа-яА-Я]+(([' \\-][a-zA-Zа-яА-Я ])?[a-zA-Zа-яА-Я]*)*$";
+const PHONE_NUMBER_PATTERN_REGEX =
+  '\\+?\\d{1,4}?[ .\\-\\s]?\\(?\\d{1,3}?\\)?[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,4}[ .\\-\\s]?\\d{1,9}';
 
 /**
  * Form to add new contact.
@@ -18,7 +20,12 @@ const NAME_PATTERN_REGEX =
  * @param {callback} props.onNameChange Callback to handle name input change.
  * @returns {React.Component} Form component.
  */
-export const ContactForm = ({ inputNameValue, onSubmit, onNameChange }) => {
+export const ContactForm = ({
+  inputName,
+  inputNumber,
+  onSubmit,
+  onNameChange,
+}) => {
   /**
    * Handles form submition.
    * Terminates if requested regex pattern does not match to input value.
@@ -28,13 +35,20 @@ export const ContactForm = ({ inputNameValue, onSubmit, onNameChange }) => {
   const handleSubmit = event => {
     event.preventDefault();
 
+    // Additional pattern checks in JS
+    // ! Evaluate logging data when if saving to a log file for potential debugging
     const name = event.target.name.value;
-    // Additional pattern check in JS
-    if (!name.match(NAME_PATTERN_REGEX)) {
+    const number = event.target.number.value;
+    if (!name.match(CONTACT_NAME_PATTERN_REGEX)) {
+      console.error(`Name '${name}' does not match allowed pattern.`);
+      return;
+    }
+    if (!number.match(PHONE_NUMBER_PATTERN_REGEX)) {
+      console.error(`Number '${number}' does not match allowed pattern.`);
       return;
     }
 
-    onSubmit(name);
+    onSubmit(name, number);
   };
 
   /**
@@ -49,15 +63,27 @@ export const ContactForm = ({ inputNameValue, onSubmit, onNameChange }) => {
 
   return (
     <Form onSubmit={handleSubmit} aria-label="Add contact form">
-      <Label aria-label="Name text">
+      <Label aria-label="Contact name">
         Name
         <Input
           onChange={throttle(handleChange, 200, { trailing: false })}
+          value={inputName}
           type="text"
-          value={inputNameValue}
           name="name"
-          pattern={NAME_PATTERN_REGEX}
+          pattern={CONTACT_NAME_PATTERN_REGEX}
           title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan."
+          required
+        />
+      </Label>
+      <Label aria-label="Contact phone number">
+        Phone number
+        <Input
+          onChange={throttle(handleChange, 200, { trailing: false })}
+          value={inputNumber}
+          type="tel"
+          name="number"
+          pattern={PHONE_NUMBER_PATTERN_REGEX}
+          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
           required
         />
       </Label>
@@ -69,7 +95,8 @@ export const ContactForm = ({ inputNameValue, onSubmit, onNameChange }) => {
 };
 
 ContactForm.propTypes = {
-  inputNameValue: PropTypes.string,
+  inputName: PropTypes.string,
+  inputNumber: PropTypes.string,
   onAddContact: PropTypes.func,
   onNameChange: PropTypes.func,
 };

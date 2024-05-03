@@ -1,4 +1,4 @@
-import PropTypes from 'prop-types';
+import PropTypes, { number } from 'prop-types';
 
 import React from 'react';
 import { List } from './ContactList.styled';
@@ -14,7 +14,7 @@ export const ContactList = ({ contacts }) =>
     <List aria-label="Contacts list">
       {contacts.map(contact => (
         <li key={contact.id} aria-label="Contact">
-          {contact.name}
+          {`${contact.name}: ${contact.number}`}
         </li>
       ))}
     </List>
@@ -27,6 +27,7 @@ ContactList.propTypes = {
     PropTypes.exact({
       id: PropTypes.string.isRequired,
       name: PropTypes.string.isRequired,
+      number: PropTypes.string.isRequired,
     })
   ),
 };
