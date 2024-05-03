@@ -1,5 +1,8 @@
 import styled from 'styled-components';
 
+/**
+ * Styled from to contain new contact information.
+ */
 export const Form = styled('form')(props => {
   return {
     width: '100%',
@@ -13,6 +16,9 @@ export const Form = styled('form')(props => {
   };
 });
 
+/**
+ * Label for input element.
+ */
 export const Label = styled('label')({
   display: 'flex',
   flexDirection: 'column',
