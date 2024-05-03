@@ -11,9 +11,11 @@ import { List } from './ContactList.styled';
  */
 export const ContactList = ({ contacts }) =>
   contacts && contacts.length > 0 ? (
-    <List>
+    <List aria-label="Contacts list">
       {contacts.map(contact => (
-        <li key={contact.id}>{contact.name}</li>
+        <li key={contact.id} aria-label="Contact">
+          {contact.name}
+        </li>
       ))}
     </List>
   ) : (
