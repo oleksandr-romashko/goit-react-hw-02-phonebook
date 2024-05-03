@@ -68,7 +68,7 @@ After completing this step, the application should look something like this.
 
 ### Step 2
 
-Expand the functionality of the app by allowing users to add numbers phone numbers. 
+Expand the functionality of the app by allowing users to add phone numbers. 
 To do this, add `<input type="tel">` to the form, and a property to store its value in the state.
 
 ```javascript
