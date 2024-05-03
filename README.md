@@ -144,7 +144,7 @@ state = {
 }
 ```
 
-Four components are enough: add contact form, contact list contact list, contact list item, and search filter.
+Four components are enough: add contact form, contact list, contact list item, and search filter.
 
 After the refactoring, the root component of the application will look like this.
 

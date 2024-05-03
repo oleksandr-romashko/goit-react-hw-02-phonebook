@@ -2,10 +2,12 @@ import { Component } from 'react';
 import { nanoid } from 'nanoid';
 
 import ContactForm from 'components/ContactForm/ContactForm';
+import Filter from 'components/Filter/Filter';
 import ContactList from 'components/ContactList/ContactList';
-import textToNormalizedWordsArray from 'components/helpers/textToNormalizedWordsArray';
 
 import { Wrapper, Title, Subtitle } from './Phonebook.styled';
+
+import textToNormalizedWordsArray from 'components/helpers/textToNormalizedWordsArray';
 
 /**
  * Phonebook to add and manage contacts.
@@ -77,10 +79,12 @@ class Phonebook extends Component {
           onSubmit={this.addContact}
         />
         <Subtitle>Contacts</Subtitle>
-        <ContactList
+        <Filter
           filterText={this.state.filter}
-          contacts={this.filterContacts()}
           onInputChange={this.handleTextChange} />
+        <ContactList
+          contacts={this.filterContacts()}
+           />
       </Wrapper>
     );
   }
