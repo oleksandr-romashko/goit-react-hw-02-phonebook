@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const Button = styled('button')({
+const Button = styled('button')({
   display: 'inline-flex',
   padding: '6px 16px',
   justifyContent: 'center',
@@ -26,3 +26,5 @@ export const Button = styled('button')({
     background: 'linear-gradient(180deg, #4a94fc 0%, #0a67e3 100%)',
   },
 });
+
+export default Button;
