@@ -1,8 +1,10 @@
+import React from 'react';
 import PropTypes from 'prop-types';
 import throttle from 'lodash.throttle';
 
-import { Button } from 'components/Button/Button.styled';
 import Input from 'components/Input/Input.styled';
+import Button from 'components/Button/Button.styled';
+
 import { Form, Label } from './ContactForm.styled';
 
 /**
@@ -15,20 +17,26 @@ const PHONE_NUMBER_PATTERN_REGEX =
 
 /**
  * Form to add new contact.
- * @param {string} props.nameText Contact name.
- * @param {string} props.numberText Contact number.
- * @param {callback} props.onInputChange Callback to handle input value change.
  * @param {callback} props.onSubmit Callback to handle form submit.
  * @returns {React.Component} Form component.
  */
-const ContactForm = ({ nameText, numberText, onInputChange, onSubmit }) => {
+class ContactForm extends React.Component {
+  #defaultState = {
+    name: '',
+    number: '',
+  };
+
+  state = {
+    ...this.#defaultState,
+  };
+
   /**
    * Handles form submition.
    * Terminates if requested regex pattern does not match to input value.
    * Calls provided props callback that handles add of a new contact.
    * @param {React.SyntheticEvent} event React crossbrowser SyntheticEvent that wraps the native Event.
    */
-  const handleSubmit = event => {
+  handleSubmit = event => {
     event.preventDefault();
 
     // Additional pattern checks in JS
@@ -44,57 +52,65 @@ const ContactForm = ({ nameText, numberText, onInputChange, onSubmit }) => {
       return;
     }
 
-    onSubmit(name, number);
+    this.props.onSubmit(name, number);
+
+    this.setState({
+      name: this.#defaultState.name,
+      number: this.#defaultState.number,
+    });
   };
 
   /**
    * Handles input change.
-   * Calls provided props callback that handles input change.
+   * Calls a function to handle input change.
    * @param {string} event.target.name Name of the element.
    * @param {string} event.target.value Element value.
    */
-  const handleChange = ({ target: { name, value } }) => {
-    onInputChange({ name, value });
+  handleInputTextChange = ({ target: { name, value } }) => {
+    this.setState({ [name]: value });
   };
 
-  return (
-    <Form onSubmit={handleSubmit} aria-label="Add contact form">
-      <Label aria-label="Contact name">
-        Name
-        <Input
-          onChange={throttle(handleChange, 200, { trailing: false })}
-          value={nameText}
-          type="text"
-          name="name"
-          pattern={CONTACT_NAME_PATTERN_REGEX}
-          title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan."
-          required
-        />
-      </Label>
-      <Label aria-label="Contact phone number">
-        Phone number
-        <Input
-          onChange={throttle(handleChange, 200, { trailing: false })}
-          value={numberText}
-          type="tel"
-          name="number"
-          pattern={PHONE_NUMBER_PATTERN_REGEX}
-          title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
-          required
-        />
-      </Label>
-      <Button type="submit" aria-label="Add contact">
-        Add contact
-      </Button>
-    </Form>
-  );
-};
+  render() {
+    return (
+      <Form onSubmit={this.handleSubmit} aria-label="Add contact form">
+        <Label aria-label="Contact name">
+          Name
+          <Input
+            onChange={throttle(this.handleInputTextChange, 200, {
+              trailing: false,
+            })}
+            value={this.state.name}
+            type="text"
+            name="name"
+            pattern={CONTACT_NAME_PATTERN_REGEX}
+            title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan."
+            required
+          />
+        </Label>
+        <Label aria-label="Contact phone number">
+          Phone number
+          <Input
+            onChange={throttle(this.handleInputTextChange, 200, {
+              trailing: false,
+            })}
+            value={this.state.number}
+            type="tel"
+            name="number"
+            pattern={PHONE_NUMBER_PATTERN_REGEX}
+            title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
+            required
+          />
+        </Label>
+        <Button type="submit" aria-label="Add contact">
+          Add contact
+        </Button>
+      </Form>
+    );
+  }
+}
 
 ContactForm.propTypes = {
-  nameText: PropTypes.string,
-  numberText: PropTypes.string,
-  onAddContact: PropTypes.func,
-  onInputChange: PropTypes.func,
+  onSubmit: PropTypes.func.isRequired,
 };
 
 export default ContactForm;
