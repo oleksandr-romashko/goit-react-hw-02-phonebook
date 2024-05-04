@@ -16,8 +16,6 @@ class Phonebook extends Component {
   #defaultState = {
     contacts: [],
     filter: '',
-    name: '',
-    number: '',
   }
 
   state = {
@@ -42,8 +40,6 @@ class Phonebook extends Component {
     this.setState(prevState => (
       {
         contacts: [contact, ...prevState.contacts],
-        name: this.#defaultState.name,
-        number: this.#defaultState.number
       }
     ))
   };
@@ -53,7 +49,7 @@ class Phonebook extends Component {
    * @param {string} props.name Name of the element.
    * @param {string} props.value Text value of the element.
    */
-  handleTextChange = ({ name, value }) => {
+  handleFilterTextChange = ({ name, value }) => {
     this.setState({ [name]: value });
   }
 
@@ -92,18 +88,15 @@ class Phonebook extends Component {
       <Wrapper>
         <Title>Phonebook</Title>
         <ContactForm
-          nameText={this.state.name}
-          numberText={this.state.number}
-          onInputChange={this.handleTextChange}
           onSubmit={this.addContact}
         />
         <Subtitle>Contacts</Subtitle>
         <Filter
           filterText={this.state.filter}
-          onInputChange={this.handleTextChange} />
+          onFilterInputChange={this.handleFilterTextChange} />
         <ContactList
           contacts={this.filterContacts()}
-          onDelete={this.deleteContactById}
+          onContactDelete={this.deleteContactById}
            />
       </Wrapper>
     );
