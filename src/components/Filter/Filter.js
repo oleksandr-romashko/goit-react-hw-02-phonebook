@@ -3,23 +3,30 @@ import throttle from 'lodash.throttle';
 
 import Input from 'components/Input/Input.styled';
 import { FilterWrapper } from './Filter.styled';
+import React from 'react';
 
-const Filter = ({ filterText, onInputChange }) => {
+/**
+ * Contacts filter component.
+ * @param {string} props.filterText Filter input text.
+ * @param {callback} props.onFilterInputChange Callback to handle input change.
+ * @returns {React.Component} Filter component.
+ */
+const Filter = ({ filterText, onFilterInputChange }) => {
   /**
    * Handles input change.
    * Calls provided props callback that handles input change.
    * @param {string} event.target.name Name of the element.
    * @param {string} event.target.value Element value.
    */
-  const handleFilterChange = ({ target: { name, value } }) => {
-    onInputChange({ name, value });
+  const handleInputChange = ({ target: { name, value } }) => {
+    onFilterInputChange({ name, value });
   };
 
   return (
     <FilterWrapper>
       Find contacts by name
       <Input
-        onChange={throttle(handleFilterChange, 150, { trailing: false })}
+        onChange={throttle(handleInputChange, 150, { trailing: false })}
         value={filterText}
         type="text"
         name="filter"
@@ -31,7 +38,7 @@ const Filter = ({ filterText, onInputChange }) => {
 
 Filter.propTypes = {
   filterText: PropTypes.string,
-  onInputChange: PropTypes.func.isRequired,
+  onFilterInputChange: PropTypes.func.isRequired,
 };
 
 export default Filter;
