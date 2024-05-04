@@ -1,24 +1,24 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button } from 'components/Button/Button.styled';
+import Button from 'components/Button/Button.styled';
 
 import { List, Item } from './ContactList.styled';
 
 /**
- * Render the list of contacts.
- * Displays default message when no no contacts.
- * @param {object[]} [props.contacts] Contacts array.
- * @param {callback} [props.onDelete] Callback that handles deletion of the contact.
+ * Component to contain the list of contact items.
+ * Displays default message when no contacts provided.
+ * @param {object[]} [props.contacts] Array of contacts.
+ * @param {callback} [props.onContactDelete] Callback that handles deletion of the contact.
  * @returns {React.Component} List of contacts or default message.
  */
-const ContactList = ({ contacts, onDelete }) => {
+const ContactList = ({ contacts, onContactDelete }) => {
   /**
    * Handles deletion of the contact.
    */
   const handleDelete = event => {
     const id = event.target.closest('li').dataset.id;
-    onDelete(id);
+    onContactDelete(id);
   };
 
   return (
@@ -46,8 +46,8 @@ ContactList.propTypes = {
       name: PropTypes.string.isRequired,
       number: PropTypes.string.isRequired,
     })
-  ),
-  onDelete: PropTypes.func.isRequired,
+  ).isRequired,
+  onContactDelete: PropTypes.func.isRequired,
 };
 
 export default ContactList;
