@@ -13,11 +13,15 @@ export const List = styled('ul')({
  * Styled list item to display specific contact.
  */
 export const Item = styled('li')({
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  columnGap: '24px',
+  width: '100%',
   '&:not(:first-child) ': {
     marginTop: '32px',
+  },
+  '& > *': {
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    columnGap: '24px',
   },
 });

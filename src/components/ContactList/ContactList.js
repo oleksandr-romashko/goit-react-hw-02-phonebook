@@ -27,8 +27,10 @@ const ContactList = ({ contacts, onContactDelete }) => {
         <List aria-label="Contacts list">
           {contacts.map(el => (
             <Item key={el.id} aria-label="Contact" data-id={el.id}>
-              {`${el.name}: ${el.number}`}
-              <Button onClick={handleDelete}>Delete</Button>
+              <div>
+                {`${el.name}: ${el.number}`}
+                <Button onClick={handleDelete}>Delete</Button>
+              </div>
             </Item>
           ))}
         </List>
